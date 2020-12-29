@@ -1,17 +1,22 @@
-var context = null;
+var bufferContext = null;
+var buffer = null;
+var gorilla_bild = new Image();
 
 function Vorbereitung(){
     var canvas = document.getElementById('Spielflaeche');
     
-    context = canvas.getContext('2d');
+    buffer = document.createElement('canvas');
+    buffer.width = canvas.width;
+    buffer.height = canvas.height;
 
-    var gorilla_bild = new Image();
+    bufferContext = buffer.getContext('2d');
+
     gorilla_bild.src = 'donkey-kong.png';
     gorilla_bild.onload = function(){
-        context.drawImage(gorilla_bild, 100, 300);
-        context.drawImage(gorilla_bild, 900 - 64, 300);
+        NeuZeichnen();
+        ZeichneGorilla();
+        ZeigeZeichnung();
     }
-
 }
 
 function BerechnePosition(sekunden, geschwindigkeit){
@@ -22,24 +27,26 @@ function BerechnePosition(sekunden, geschwindigkeit){
 }
 
 function NeuZeichnen(){
-    var canvas = document.getElementById('Spielflaeche');
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    bufferContext.clearRect(0, 0, buffer.width, buffer.height);
 }
 
 function ZeichneGorilla(){
-    var gorilla_bild = new Image();
-    gorilla_bild.src = 'donkey-kong.png';
-    gorilla_bild.onload = function(){
-        context.drawImage(gorilla_bild, 100, 300);
-        context.drawImage(gorilla_bild, 900 - 64, 300);
-    }  
+    bufferContext.drawImage(gorilla_bild, 100, 300);
+    bufferContext.drawImage(gorilla_bild, 900 - 64, 300);  
 }
 
 function ZeichneBall(positionX){
-    context.beginPath();
-    context.arc(positionX, 50, 10, 0, 2*Math.PI);
-    context.fillStyle="red";
-    context.fill();
+    bufferContext.beginPath();
+    bufferContext.arc(positionX, 50, 10, 0, 2*Math.PI);
+    bufferContext.fillStyle="red";
+    bufferContext.fill();
+}
+
+function ZeigeZeichnung(){
+    var canvas = document.getElementById('Spielflaeche');
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(buffer, 0, 0);
 }
 
 function Sleep(ms){
@@ -63,7 +70,9 @@ async function Abwerfen(){
         NeuZeichnen();
         ZeichneBall(pixelX);
         ZeichneGorilla();
-        await Sleep(50);
+        ZeigeZeichnung();
+        
+        await Sleep(100);
     }
    
     
