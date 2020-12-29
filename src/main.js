@@ -19,11 +19,21 @@ function Vorbereitung(){
     }
 }
 
-function BerechnePosition(sekunden, geschwindigkeit){
-    var strecke = geschwindigkeit * sekunden;
-    var pixelX = strecke * 100;
+function BerechnePosition(sekunden, winkel, geschwindigkeit){
 
-    return pixelX;
+    var b = winkel * Math.PI / 180;
+
+    var gravity = 9.81;
+
+    var sx = geschwindigkeit * Math.cos(b) * sekunden;
+    var sy = geschwindigkeit * Math.sin(b) * sekunden - 0.5 * gravity * sekunden * sekunden;
+
+    var punkt = {
+        x: sx,
+        y: sy
+    };
+
+    return punkt;
 }
 
 function NeuZeichnen(){
@@ -31,13 +41,14 @@ function NeuZeichnen(){
 }
 
 function ZeichneGorilla(){
-    bufferContext.drawImage(gorilla_bild, 100, 300);
-    bufferContext.drawImage(gorilla_bild, 900 - 64, 300);  
+    bufferContext.drawImage(gorilla_bild, 100, 500);
+    bufferContext.drawImage(gorilla_bild, 900 - 64, 500);  
 }
 
-function ZeichneBall(positionX){
+function ZeichneBall(punkt){
+    var scale = 10;
     bufferContext.beginPath();
-    bufferContext.arc(positionX, 50, 10, 0, 2*Math.PI);
+    bufferContext.arc(100 + punkt.x * scale, 500 - punkt.y * scale, 10, 0, 2*Math.PI);
     bufferContext.fillStyle="red";
     bufferContext.fill();
 }
@@ -54,25 +65,28 @@ function Sleep(ms){
 }
 
 async function Abwerfen(){
-    var winkel = document.getElementById('EingabeWinkel').value;
-    var kraft = document.getElementById('EingabeKraft').value;
+    var winkel = parseInt(document.getElementById('EingabeWinkel').value);
+    var geschwindigkeit = parseInt(document.getElementById('EingabeGeschwindigkeit').value);
 
-    var pixelX = 0;
+    var punkt = {
+        x:0,
+        y:0
+    };
     var startzeit = new Date();
     
-    while(pixelX < 1000){
+    while(punkt.y >= 0){
         var aktuellerZeitpunkt = new Date();
         
         var sekunden = (aktuellerZeitpunkt.getTime() - startzeit.getTime()) / 1000;
         
-        pixelX = BerechnePosition(sekunden,3);
+        punkt = BerechnePosition(sekunden, winkel, geschwindigkeit);
         
         NeuZeichnen();
-        ZeichneBall(pixelX);
+        ZeichneBall(punkt);
         ZeichneGorilla();
         ZeigeZeichnung();
         
-        await Sleep(100);
+        await Sleep(50);
     }
    
     
