@@ -1,6 +1,11 @@
 var bufferContext = null;
 var buffer = null;
 var gorilla_bild = new Image();
+var ballGeworfen = false;
+var ballGeworfenStart = null;
+var winkel;
+var geschwindigkeit;
+var punkt;
 
 function Vorbereitung(){
     var canvas = document.getElementById('Spielflaeche');
@@ -13,9 +18,7 @@ function Vorbereitung(){
 
     gorilla_bild.src = 'donkey-kong.png';
     gorilla_bild.onload = function(){
-        NeuZeichnen();
-        ZeichneGorilla();
-        ZeigeZeichnung();
+        render();
     }
 }
 
@@ -65,30 +68,41 @@ function Sleep(ms){
 }
 
 async function Abwerfen(){
-    var winkel = parseInt(document.getElementById('EingabeWinkel').value);
-    var geschwindigkeit = parseInt(document.getElementById('EingabeGeschwindigkeit').value);
+    winkel = parseInt(document.getElementById('EingabeWinkel').value);
+    geschwindigkeit = parseInt(document.getElementById('EingabeGeschwindigkeit').value);
 
-    var punkt = {
+    punkt = {
         x:0,
         y:0
     };
-    var startzeit = new Date();
     
-    while(punkt.y >= 0){
+    ballGeworfenStart = new Date();
+    ballGeworfen = true;
+       
+    console.log("Es wurde abgworfen");
+}
+
+var lastRender = Date.now();
+
+function render() {
+    NeuZeichnen();
+
+    if (ballGeworfen){
         var aktuellerZeitpunkt = new Date();
-        
-        var sekunden = (aktuellerZeitpunkt.getTime() - startzeit.getTime()) / 1000;
+
+        var sekunden = (aktuellerZeitpunkt.getTime() - ballGeworfenStart.getTime()) / 1000;
         
         punkt = BerechnePosition(sekunden, winkel, geschwindigkeit);
-        
-        NeuZeichnen();
+
+        if (punkt.y < 0){
+            ballGeworfen = false;
+        }
+
         ZeichneBall(punkt);
-        ZeichneGorilla();
-        ZeigeZeichnung();
-        
-        await Sleep(50);
     }
-   
-    
-    console.log("Es wurde abgworfen");
+        
+    ZeichneGorilla();
+    ZeigeZeichnung();
+  
+    requestAnimationFrame(render);
 }
