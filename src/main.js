@@ -1,3 +1,5 @@
+//import Sleep from "helper/sleep";
+
 var bufferContext = null;
 var buffer = null;
 var gorilla_bild = new Image();
@@ -18,7 +20,14 @@ function Vorbereitung(){
 
     gorilla_bild.src = 'donkey-kong.png';
     gorilla_bild.onload = function(){
-        render();
+        //render();
+        
+        NeuZeichnen();
+        ZeichneGorilla({x:50,y:0});
+        ZeichneHaus({x:15, y:0},13, 5);
+        ZeichneGorilla({x:17,y:13});
+        ZeichneGorilla({x:0,y:0});
+        ZeigeZeichnung();
     }
 }
 
@@ -39,21 +48,46 @@ function BerechnePosition(sekunden, winkel, geschwindigkeit){
     return punkt;
 }
 
+function TransformiereWert(wert){
+    return wert *20;
+
+}
+
+function TransformierePunkt (punkt){
+    var ergebnis = {
+        x: TransformiereWert(punkt.x),
+        y: 560-TransformiereWert(punkt.y)
+    };
+    return ergebnis;
+
+}
+
 function NeuZeichnen(){
     bufferContext.clearRect(0, 0, buffer.width, buffer.height);
 }
 
-function ZeichneGorilla(){
-    bufferContext.drawImage(gorilla_bild, 100, 500);
-    bufferContext.drawImage(gorilla_bild, 900 - 64, 500);  
+function ZeichneGorilla(punkt){
+    var pixel = TransformierePunkt(punkt);
+
+    bufferContext.drawImage(gorilla_bild, pixel.x - 31, pixel.y - 46);
 }
 
 function ZeichneBall(punkt){
-    var scale = 10;
+    var pixel = TransformierePunkt (punkt);
+    
     bufferContext.beginPath();
-    bufferContext.arc(100 + punkt.x * scale, 500 - punkt.y * scale, 10, 0, 2*Math.PI);
+    bufferContext.arc(pixel.x, pixel.y, 10, 0, 2*Math.PI);
     bufferContext.fillStyle="red";
     bufferContext.fill();
+}
+
+function ZeichneHaus (punkt,hoehe,breite){
+    var pixel = TransformierePunkt (punkt);
+    
+    bufferContext.fillStyle="#000";
+    bufferContext.fillRect(pixel.x, pixel.y, TransformiereWert(breite), -TransformiereWert(hoehe));
+    bufferContext.fillStyle="green";
+    bufferContext.fillRect(pixel.x+1, pixel.y+1, TransformiereWert(breite)-2, -TransformiereWert(hoehe)+1);
 }
 
 function ZeigeZeichnung(){
@@ -61,10 +95,6 @@ function ZeigeZeichnung(){
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.drawImage(buffer, 0, 0);
-}
-
-function Sleep(ms){
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function Abwerfen(){
