@@ -1,4 +1,4 @@
-//import Sleep from "helper/sleep";
+import Sleep from "../src/helper/sleep.js";
 
 var bufferContext = null;
 var buffer = null;
@@ -9,7 +9,7 @@ var winkel;
 var geschwindigkeit;
 var punkt;
 
-function Vorbereitung(){
+window.onload = function(){
     var canvas = document.getElementById('Spielflaeche');
     
     buffer = document.createElement('canvas');
@@ -18,17 +18,13 @@ function Vorbereitung(){
 
     bufferContext = buffer.getContext('2d');
 
+    document.getElementById("EingabeButon").onclick = Abwerfen;
+
     gorilla_bild.src = 'donkey-kong.png';
     gorilla_bild.onload = function(){
-        //render();
-        
-        NeuZeichnen();
-        ZeichneGorilla({x:50,y:0});
-        ZeichneHaus({x:15, y:0},13, 5);
-        ZeichneGorilla({x:17,y:13});
-        ZeichneGorilla({x:0,y:0});
-        ZeigeZeichnung();
+        render();
     }
+    
 }
 
 function BerechnePosition(sekunden, winkel, geschwindigkeit){
@@ -112,8 +108,6 @@ async function Abwerfen(){
     console.log("Es wurde abgworfen");
 }
 
-var lastRender = Date.now();
-
 function render() {
     NeuZeichnen();
 
@@ -131,7 +125,10 @@ function render() {
         ZeichneBall(punkt);
     }
         
-    ZeichneGorilla();
+    ZeichneGorilla({x:50,y:0});
+    ZeichneGorilla({x:17,y:13});
+    ZeichneHaus({x:15, y:0},13, 5);
+    ZeichneGorilla({x:0,y:0});
     ZeigeZeichnung();
   
     requestAnimationFrame(render);
