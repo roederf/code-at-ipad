@@ -1,4 +1,5 @@
-import Sleep from "../src/helper/sleep.js";
+import ZeichneHaus from "../src/rendering/house.js";
+import { TransformierePunkt, TransformiereWert } from "../src/rendering/transform.js";
 
 var bufferContext = null;
 var buffer = null;
@@ -44,20 +45,6 @@ function BerechnePosition(sekunden, winkel, geschwindigkeit){
     return punkt;
 }
 
-function TransformiereWert(wert){
-    return wert *20;
-
-}
-
-function TransformierePunkt (punkt){
-    var ergebnis = {
-        x: TransformiereWert(punkt.x),
-        y: 560-TransformiereWert(punkt.y)
-    };
-    return ergebnis;
-
-}
-
 function NeuZeichnen(){
     bufferContext.clearRect(0, 0, buffer.width, buffer.height);
 }
@@ -75,15 +62,6 @@ function ZeichneBall(punkt){
     bufferContext.arc(pixel.x, pixel.y, 10, 0, 2*Math.PI);
     bufferContext.fillStyle="red";
     bufferContext.fill();
-}
-
-function ZeichneHaus (punkt,hoehe,breite){
-    var pixel = TransformierePunkt (punkt);
-    
-    bufferContext.fillStyle="#000";
-    bufferContext.fillRect(pixel.x, pixel.y, TransformiereWert(breite), -TransformiereWert(hoehe));
-    bufferContext.fillStyle="green";
-    bufferContext.fillRect(pixel.x+1, pixel.y+1, TransformiereWert(breite)-2, -TransformiereWert(hoehe)+1);
 }
 
 function ZeigeZeichnung(){
@@ -127,7 +105,7 @@ function render() {
         
     ZeichneGorilla({x:50,y:0});
     ZeichneGorilla({x:17,y:13});
-    ZeichneHaus({x:15, y:0},13, 5);
+    ZeichneHaus(bufferContext, {x:15, y:0},13, 5);
     ZeichneGorilla({x:0,y:0});
     ZeigeZeichnung();
   
