@@ -1,9 +1,10 @@
 import ZeichneHaus from "../src/rendering/house.js";
+import ZeichneGorilla from "../src/rendering/gorilla.js";
+import ZeichneBall from "../src/rendering/ball.js";
 import { TransformierePunkt, TransformiereWert } from "../src/rendering/transform.js";
 
 var bufferContext = null;
 var buffer = null;
-var gorilla_bild = new Image();
 var ballGeworfen = false;
 var ballGeworfenStart = null;
 var winkel;
@@ -21,10 +22,7 @@ window.onload = function(){
 
     document.getElementById("EingabeButon").onclick = Abwerfen;
 
-    gorilla_bild.src = 'donkey-kong.png';
-    gorilla_bild.onload = function(){
-        render();
-    }
+    render();
     
 }
 
@@ -47,21 +45,6 @@ function BerechnePosition(sekunden, winkel, geschwindigkeit){
 
 function NeuZeichnen(){
     bufferContext.clearRect(0, 0, buffer.width, buffer.height);
-}
-
-function ZeichneGorilla(punkt){
-    var pixel = TransformierePunkt(punkt);
-
-    bufferContext.drawImage(gorilla_bild, pixel.x - 31, pixel.y - 46);
-}
-
-function ZeichneBall(punkt){
-    var pixel = TransformierePunkt (punkt);
-    
-    bufferContext.beginPath();
-    bufferContext.arc(pixel.x, pixel.y, 10, 0, 2*Math.PI);
-    bufferContext.fillStyle="red";
-    bufferContext.fill();
 }
 
 function ZeigeZeichnung(){
@@ -100,13 +83,13 @@ function render() {
             ballGeworfen = false;
         }
 
-        ZeichneBall(punkt);
+        ZeichneBall(bufferContext,punkt);
     }
         
-    ZeichneGorilla({x:50,y:0});
-    ZeichneGorilla({x:17,y:13});
+    ZeichneGorilla(bufferContext, {x:50,y:0});
+    ZeichneGorilla(bufferContext, {x:17,y:13});
     ZeichneHaus(bufferContext, {x:15, y:0},13, 5);
-    ZeichneGorilla({x:0,y:0});
+    ZeichneGorilla(bufferContext, {x:0,y:0});
     ZeigeZeichnung();
   
     requestAnimationFrame(render);
