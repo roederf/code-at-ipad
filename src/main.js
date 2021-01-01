@@ -1,7 +1,6 @@
 import ZeichneHaus from "../src/rendering/house.js";
 import ZeichneGorilla from "../src/rendering/gorilla.js";
 import ZeichneBall from "../src/rendering/ball.js";
-import { TransformierePunkt, TransformiereWert } from "../src/rendering/transform.js";
 
 var bufferContext = null;
 var buffer = null;
