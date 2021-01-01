@@ -2,18 +2,19 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="styles.css">
-        <script src="main.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
+        <script type="module" src="main.js"></script>
     </head>
-    <body onload="Vorbereitung();">
+    <body>
         <h1>Gorilla!</h1>
         <div>
             <canvas id="Spielflaeche" width=1000px height=560px></canvas>
             <div>Bitte eingeben:</div>
             <div>Winkel</div>
-            <input type="number"/>
-            <div>Kraft</div>
-            <input type="number"/>
-            <button type="button" onclick="Abwerfen();">Abwerfen</button>
+            <input id="EingabeWinkel" type="number"/>
+            <div>Geschwindigkeit</div>
+            <input id="EingabeGeschwindigkeit" type="number"/>
+            <button id="EingabeButon" type="button">Abwerfen</button>
         </div>
     </body>
 </html>

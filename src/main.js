@@ -1,3 +1,6 @@
+import ZeichneHaus from "../src/rendering/house.js";
+import { TransformierePunkt, TransformiereWert } from "../src/rendering/transform.js";
+
 var bufferContext = null;
 var buffer = null;
 var gorilla_bild = new Image();
@@ -7,7 +10,7 @@ var winkel;
 var geschwindigkeit;
 var punkt;
 
-function Vorbereitung(){
+window.onload = function(){
     var canvas = document.getElementById('Spielflaeche');
     
     buffer = document.createElement('canvas');
@@ -16,10 +19,13 @@ function Vorbereitung(){
 
     bufferContext = buffer.getContext('2d');
 
+    document.getElementById("EingabeButon").onclick = Abwerfen;
+
     gorilla_bild.src = 'donkey-kong.png';
     gorilla_bild.onload = function(){
         render();
     }
+    
 }
 
 function BerechnePosition(sekunden, winkel, geschwindigkeit){
@@ -43,15 +49,17 @@ function NeuZeichnen(){
     bufferContext.clearRect(0, 0, buffer.width, buffer.height);
 }
 
-function ZeichneGorilla(){
-    bufferContext.drawImage(gorilla_bild, 100, 500);
-    bufferContext.drawImage(gorilla_bild, 900 - 64, 500);  
+function ZeichneGorilla(punkt){
+    var pixel = TransformierePunkt(punkt);
+
+    bufferContext.drawImage(gorilla_bild, pixel.x - 31, pixel.y - 46);
 }
 
 function ZeichneBall(punkt){
-    var scale = 10;
+    var pixel = TransformierePunkt (punkt);
+    
     bufferContext.beginPath();
-    bufferContext.arc(100 + punkt.x * scale, 500 - punkt.y * scale, 10, 0, 2*Math.PI);
+    bufferContext.arc(pixel.x, pixel.y, 10, 0, 2*Math.PI);
     bufferContext.fillStyle="red";
     bufferContext.fill();
 }
@@ -61,10 +69,6 @@ function ZeigeZeichnung(){
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.drawImage(buffer, 0, 0);
-}
-
-function Sleep(ms){
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function Abwerfen(){
@@ -81,8 +85,6 @@ async function Abwerfen(){
        
     console.log("Es wurde abgworfen");
 }
-
-var lastRender = Date.now();
 
 function render() {
     NeuZeichnen();
@@ -101,7 +103,10 @@ function render() {
         ZeichneBall(punkt);
     }
         
-    ZeichneGorilla();
+    ZeichneGorilla({x:50,y:0});
+    ZeichneGorilla({x:17,y:13});
+    ZeichneHaus(bufferContext, {x:15, y:0},13, 5);
+    ZeichneGorilla({x:0,y:0});
     ZeigeZeichnung();
   
     requestAnimationFrame(render);
