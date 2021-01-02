@@ -19,15 +19,15 @@ var state = {
 
 export function NewGame(){
     state.player1Position = {
-        x: 8,
-        y: 8
+        x: 12,
+        y: 5
     };
     state.player2Position = {
         x:43,
         y:11
     };
     state.houses = [
-        10, 8, 5, 9, 11, 12, 8, 7, 11, 9, 10
+        10, 8, 5, 9, 11, 20, 8, 7, 11, 9, 10
     ];
 }
 

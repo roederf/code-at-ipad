@@ -5,6 +5,6 @@ export default function ZeichneHaus (context,punkt,hoehe,breite){
     
     context.fillStyle="#000";
     context.fillRect(pixel.x, pixel.y, TransformiereWert(breite), -TransformiereWert(hoehe));
-    context.fillStyle="green";
+    context.fillStyle="darkgreen";
     context.fillRect(pixel.x+1, pixel.y+1, TransformiereWert(breite)-2, -TransformiereWert(hoehe)+1);
 }

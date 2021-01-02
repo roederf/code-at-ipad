@@ -1,5 +1,6 @@
 
 import {TransformierePunkt} from "./transform.js"
+
 export default function ZeichneBall(buffer,punkt){
     var pixel = TransformierePunkt (punkt);
     
