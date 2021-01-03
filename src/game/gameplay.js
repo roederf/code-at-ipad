@@ -32,7 +32,17 @@ export function NeuesSpielStarten(){
         y:11
     };
     spielzustand.haeuser = [
-        10, 8, 5, 9, 11, 20, 8, 7, 11, 9, 10
+        { x: 0, y:10, b:5 },
+        { x: 5, y: 8, b:5 },
+        { x:10, y: 5, b:5 },
+        { x:15, y: 9, b:5 },
+        { x:20, y:11, b:5 },
+        { x:25, y:20, b:5 },
+        { x:30, y: 8, b:5 },
+        { x:35, y: 7, b:5 },
+        { x:40, y:11, b:5 },
+        { x:45, y: 9, b:5 },
+        { x:50, y:10, b:5 }
     ];
     spielzustand.ballPosition = null;
 }
@@ -59,6 +69,24 @@ export function Spieler2Werfen(winkel, geschwindigkeit){
     }
 }
 
+function TesteObBallEtwasGetroffenHat(){
+    var ergebnis = false;
+    
+    for(var i=0; i<spielzustand.haeuser.length; i++){
+        var haus = spielzustand.haeuser[i];
+        if (spielzustand.ballPosition.x > haus.x 
+            && spielzustand.ballPosition.x < haus.x + haus.b)
+            {
+                if (haus.y > spielzustand.ballPosition.y){
+                    ergebnis = true;
+                    return ergebnis;
+                }
+            }
+    }
+
+    return ergebnis
+}
+
 export function Simulation(){
     var aktuellerZeitpunkt = new Date();
 
@@ -71,7 +99,7 @@ export function Simulation(){
             spielzustand.spieler1.winkel,
             spielzustand.spieler1.geschwindigkeit);
         
-        if (spielzustand.ballPosition.y < 0){
+        if (TesteObBallEtwasGetroffenHat()){
             spielzustand.spieler1.zustand = WARTEN;
             spielzustand.spieler2.zustand = AN_DER_REIHE;
         }
@@ -86,7 +114,7 @@ export function Simulation(){
             spielzustand.spieler2.winkel,
             spielzustand.spieler2.geschwindigkeit);
         
-        if (spielzustand.ballPosition.y < 0){
+        if (TesteObBallEtwasGetroffenHat()){
             spielzustand.spieler1.zustand = AN_DER_REIHE;
             spielzustand.spieler2.zustand = WARTEN;
         }

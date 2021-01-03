@@ -76,7 +76,7 @@ function render() {
     
     for (let i = 0; i < spielzustand.haeuser.length; i++)
     {    
-        const hoehe = spielzustand.haeuser[i];
+        const hoehe = spielzustand.haeuser[i].y;
         const breite = 5;
         ZeichneHaus(bufferContext, {x:i*breite, y:0}, hoehe, breite); 
     }
