@@ -7,3 +7,11 @@ canvas {
     background :blue; 
     border: "2px solid black"
 }
+
+.footer {
+    display: flex;
+}
+
+.column {
+    flex: 1;
+}

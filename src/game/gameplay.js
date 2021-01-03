@@ -1,12 +1,9 @@
 import BerechneBallPosition from "./formulas.js";
-
-const AN_DER_REIHE = 'AnDerReihe';
-const ABGEWORFEN = 'Abgeworfen';
-const WARTEN = 'Warten';
+import { AN_DER_REIHE, ABGEWORFEN, WARTEN } from "./konstanten.js"
 
 var spielzustand = {
     spieler1: {
-        name: "",
+        name: "1",
         position: null,
         zustand: AN_DER_REIHE,
         zeitAbgeworfen: null,
@@ -14,7 +11,7 @@ var spielzustand = {
         geschwindigkeit: undefined
     },
     spieler2: {
-        name: "",
+        name: "2",
         position: null,
         zustand: WARTEN,
         zeitAbgeworfen: null,
@@ -38,8 +35,6 @@ export function NeuesSpielStarten(){
         10, 8, 5, 9, 11, 20, 8, 7, 11, 9, 10
     ];
     spielzustand.ballPosition = null;
-    spielzustand.spieler1.zustand = WARTEN;
-    spielzustand.spieler2.zustand = AN_DER_REIHE;
 }
 
 export function Spieler1Werfen(winkel, geschwindigkeit){

@@ -5,6 +5,7 @@ import { NeuesSpielStarten,
     Spieler1Werfen, 
     Spieler2Werfen,
     Simulation } from "./game/gameplay.js";
+import { ABGEWORFEN, AN_DER_REIHE, WARTEN } from "./game/konstanten.js"
 
 var bufferContext = null;
 var buffer = null;
@@ -24,6 +25,8 @@ window.onload = function(){
     document.getElementById("EingabeButon2").onclick = AbwerfenSpieler2;
 
     NeuesSpielStarten();
+
+    document.getElementById("Spieler1Titel").innerHTML = "Spieler 1 ist dran";
 
     render();
 }
@@ -53,6 +56,18 @@ async function AbwerfenSpieler2(){
     Spieler2Werfen(180 - winkel, geschwindigkeit);
 }
 
+function ZeigeZustand(spieler) {
+    if (spieler.zustand === AN_DER_REIHE ){
+        document.getElementById("Spieler" + spieler.name + "Titel").innerHTML = "Spieler " + spieler.name + " ist dran";
+    }
+    else if (spieler.zustand === ABGEWORFEN){
+        document.getElementById("Spieler" + spieler.name + "Titel").innerHTML = "Spieler " + spieler.name + " hat geworfen";
+    }
+    else if (spieler.zustand === WARTEN){
+        document.getElementById("Spieler" + spieler.name + "Titel").innerHTML = "Spieler " + spieler.name + " wartet";
+    }
+}
+
 function render() {
 
     var spielzustand = Simulation();
@@ -69,10 +84,13 @@ function render() {
     ZeichneGorilla(bufferContext, spielzustand.spieler1.position);
     ZeichneGorilla(bufferContext, spielzustand.spieler2.position);
 
-    if (spielzustand.spieler1.zustand === 'Abgeworfen' || spielzustand.spieler2.zustand === 'Abgeworfen'){
+    if (spielzustand.spieler1.zustand === ABGEWORFEN || spielzustand.spieler2.zustand === ABGEWORFEN){
         ZeichneBall(bufferContext, spielzustand.ballPosition);
     }
-    
+
+    ZeigeZustand(spielzustand.spieler1);
+    ZeigeZustand(spielzustand.spieler2);
+
     ZeigeZeichnung();
   
     requestAnimationFrame(render);
