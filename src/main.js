@@ -77,11 +77,13 @@ function render() {
 
     NeuZeichnen();
     
+    var startX = 0;
     for (let i = 0; i < spielzustand.haeuser.length; i++)
     {    
         const hoehe = spielzustand.haeuser[i].y;
-        const breite = 5;
-        ZeichneHaus(bufferContext, {x:i*breite, y:0}, hoehe, breite); 
+        const breite = spielzustand.haeuser[i].b;
+        ZeichneHaus(bufferContext, {x:startX, y:0}, hoehe, breite); 
+        startX += breite;
     }
         
     ZeichneGorilla(bufferContext, spielzustand.spieler1.position);

@@ -33,8 +33,8 @@ export function NeuesSpielStarten(){
     };
     spielzustand.haeuser = [
         { x: 0, y:10, b:5 },
-        { x: 5, y: 8, b:5 },
-        { x:10, y: 5, b:5 },
+        { x: 5, y: 8, b:4 },
+        { x: 9, y: 5, b:6 },
         { x:15, y: 9, b:5 },
         { x:20, y:11, b:5 },
         { x:25, y:20, b:5 },
