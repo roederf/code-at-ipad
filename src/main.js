@@ -5,7 +5,7 @@ import { NeuesSpielStarten,
     Spieler1Werfen, 
     Spieler2Werfen,
     Simulation } from "./game/gameplay.js";
-import { ABGEWORFEN, AN_DER_REIHE, WARTEN } from "./game/konstanten.js"
+import { ABGEWORFEN, AN_DER_REIHE, GEWONNEN, WARTEN } from "./game/konstanten.js"
 
 var bufferContext = null;
 var buffer = null;
@@ -57,7 +57,10 @@ async function AbwerfenSpieler2(){
 }
 
 function ZeigeZustand(spieler) {
-    if (spieler.zustand === AN_DER_REIHE ){
+    if (spieler.zustand === GEWONNEN){
+        document.getElementById("Info").innerHTML = "Spieler" + spieler.name + " hat gewonnen.";
+    }
+    else if (spieler.zustand === AN_DER_REIHE ){
         document.getElementById("Spieler" + spieler.name + "Titel").innerHTML = "Spieler " + spieler.name + " ist dran";
     }
     else if (spieler.zustand === ABGEWORFEN){
@@ -84,12 +87,12 @@ function render() {
     ZeichneGorilla(bufferContext, spielzustand.spieler1.position);
     ZeichneGorilla(bufferContext, spielzustand.spieler2.position);
 
+    ZeigeZustand(spielzustand.spieler1);
+    ZeigeZustand(spielzustand.spieler2);
+
     if (spielzustand.spieler1.zustand === ABGEWORFEN || spielzustand.spieler2.zustand === ABGEWORFEN){
         ZeichneBall(bufferContext, spielzustand.ballPosition);
     }
-
-    ZeigeZustand(spielzustand.spieler1);
-    ZeigeZustand(spielzustand.spieler2);
 
     ZeigeZeichnung();
   

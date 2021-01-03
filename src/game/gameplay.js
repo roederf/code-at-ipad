@@ -1,5 +1,5 @@
 import BerechneBallPosition from "./formulas.js";
-import { AN_DER_REIHE, ABGEWORFEN, WARTEN } from "./konstanten.js"
+import { AN_DER_REIHE, ABGEWORFEN, WARTEN, GEWONNEN } from "./konstanten.js"
 
 var spielzustand = {
     spieler1: {
@@ -104,7 +104,7 @@ export function Simulation(){
             spielzustand.spieler1.geschwindigkeit);
         
         if (TesteObBallSpielerGetroffenWurde(spielzustand.spieler2)){
-            console.log("Getroffen");
+            spielzustand.spieler1.zustand = GEWONNEN;
         }
         else if (TesteObBallEtwasGetroffenHat()){
             spielzustand.spieler1.zustand = WARTEN;
@@ -122,7 +122,7 @@ export function Simulation(){
             spielzustand.spieler2.geschwindigkeit);
         
         if (TesteObBallSpielerGetroffenWurde(spielzustand.spieler1)){
-            console.log("Getroffen");
+            spielzustand.spieler2.zustand = GEWONNEN;
         }
         else if (TesteObBallEtwasGetroffenHat()){
             spielzustand.spieler1.zustand = AN_DER_REIHE;
