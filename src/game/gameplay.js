@@ -70,21 +70,25 @@ export function Spieler2Werfen(winkel, geschwindigkeit){
 }
 
 function TesteObBallEtwasGetroffenHat(){
-    var ergebnis = false;
-    
     for(var i=0; i<spielzustand.haeuser.length; i++){
         var haus = spielzustand.haeuser[i];
         if (spielzustand.ballPosition.x > haus.x 
             && spielzustand.ballPosition.x < haus.x + haus.b)
             {
                 if (haus.y > spielzustand.ballPosition.y){
-                    ergebnis = true;
-                    return ergebnis;
+                    return true;
                 }
             }
     }
 
-    return ergebnis
+    return false;
+}
+
+function TesteObBallSpielerGetroffenWurde(spieler){
+    var abstandX = spieler.position.x - spielzustand.ballPosition.x;
+    var abstandY = spieler.position.y - spielzustand.ballPosition.y;
+    var abstand = Math.sqrt( abstandX * abstandX + abstandY * abstandY );
+    return (abstand <= 1.5);
 }
 
 export function Simulation(){
@@ -99,7 +103,10 @@ export function Simulation(){
             spielzustand.spieler1.winkel,
             spielzustand.spieler1.geschwindigkeit);
         
-        if (TesteObBallEtwasGetroffenHat()){
+        if (TesteObBallSpielerGetroffenWurde(spielzustand.spieler2)){
+            console.log("Getroffen");
+        }
+        else if (TesteObBallEtwasGetroffenHat()){
             spielzustand.spieler1.zustand = WARTEN;
             spielzustand.spieler2.zustand = AN_DER_REIHE;
         }
@@ -114,7 +121,10 @@ export function Simulation(){
             spielzustand.spieler2.winkel,
             spielzustand.spieler2.geschwindigkeit);
         
-        if (TesteObBallEtwasGetroffenHat()){
+        if (TesteObBallSpielerGetroffenWurde(spielzustand.spieler1)){
+            console.log("Getroffen");
+        }
+        else if (TesteObBallEtwasGetroffenHat()){
             spielzustand.spieler1.zustand = AN_DER_REIHE;
             spielzustand.spieler2.zustand = WARTEN;
         }
