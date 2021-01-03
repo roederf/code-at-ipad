@@ -81,7 +81,8 @@ function TesteObBallEtwasGetroffenHat(){
             }
     }
 
-    return false;
+
+    return spielzustand.ballPosition.y < 0;
 }
 
 function TesteObBallSpielerGetroffenWurde(spieler){
