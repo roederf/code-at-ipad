@@ -1,7 +1,7 @@
 import ZeichneHaus from "./rendering/house.js";
 import ZeichneGorilla from "./rendering/gorilla.js";
 import ZeichneBall from "./rendering/ball.js";
-import { NewGame, Player1Throw, Simulate } from "./game/gameplay.js";
+import { NeuesSpielStarten, Spieler1Werfen, Simulation } from "./game/gameplay.js";
 
 var bufferContext = null;
 var buffer = null;
@@ -19,7 +19,7 @@ window.onload = function(){
 
     document.getElementById("EingabeButon").onclick = Abwerfen;
 
-    NewGame();
+    NeuesSpielStarten();
 
     render();
 }
@@ -39,29 +39,29 @@ async function Abwerfen(){
     winkel = parseInt(document.getElementById('EingabeWinkel').value);
     geschwindigkeit = parseInt(document.getElementById('EingabeGeschwindigkeit').value);
     
-    Player1Throw(winkel, geschwindigkeit);
+    Spieler1Werfen(winkel, geschwindigkeit);
        
     console.log("Es wurde abgworfen");
 }
 
 function render() {
 
-    var state = Simulate();
+    var spielzustand = Simulation();
 
     NeuZeichnen();
     
-    for (let i = 0; i < state.houses.length; i++)
+    for (let i = 0; i < spielzustand.haeuser.length; i++)
     {    
-        const hoehe = state.houses[i];
+        const hoehe = spielzustand.haeuser[i];
         const breite = 5;
         ZeichneHaus(bufferContext, {x:i*breite, y:0}, hoehe, breite); 
     }
         
-    ZeichneGorilla(bufferContext, {x:state.player1Position.x,y:state.player1Position.y});
-    ZeichneGorilla(bufferContext, {x:state.player2Position.x,y:state.player2Position.y});
+    ZeichneGorilla(bufferContext, spielzustand.spieler1.position);
+    ZeichneGorilla(bufferContext, spielzustand.spieler2.position);
 
-    if (state.player1State === 'Throwing'){
-        ZeichneBall(bufferContext, state.ball1Position);
+    if (spielzustand.spieler1.zustand === 'Abgeworfen'){
+        ZeichneBall(bufferContext, spielzustand.ballPosition);
     }
     
     ZeigeZeichnung();

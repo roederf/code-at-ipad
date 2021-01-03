@@ -1,62 +1,73 @@
 import BerechneBallPosition from "./formulas.js";
 
-var playerStates = ['Define', 'Throwing', 'Waiting'];
+const AN_DER_REIHE = 'AnDerReihe';
+const ABGEWORFEN = 'Abgeworfen';
+const WARTEN = 'Warten';
 
-var state = {
-    playerName1: null,
-    player1Position: null,
-    playerName2: null,
-    player2Position: null,
-    ball1Position: null,
-    player1State: playerStates[0],
-    player2State: playerStates[2],
-    ball2Position: null,
-    houses: [],
-    player1ThrownTime: null,
-    player1Winkel: undefined,
-    player1Geschwindigkeit: undefined
+var spielzustand = {
+    spieler1: {
+        name: "",
+        position: null,
+        zustand: AN_DER_REIHE,
+        zeitAbgeworfen: null,
+        winkel: undefined,
+        geschwindigkeit: undefined
+    },
+    spieler2: {
+        name: "",
+        position: null,
+        zustand: WARTEN,
+        zeitAbgeworfen: null,
+        winkel: undefined,
+        geschwindigkeit: undefined
+    },
+    ballPosition: null,
+    haeuser: []
 }
 
-export function NewGame(){
-    state.player1Position = {
+export function NeuesSpielStarten(){
+    spielzustand.spieler1.position = {
         x: 12,
         y: 5
     };
-    state.player2Position = {
+    spielzustand.spieler2.position = {
         x:43,
         y:11
     };
-    state.houses = [
+    spielzustand.haeuser = [
         10, 8, 5, 9, 11, 20, 8, 7, 11, 9, 10
     ];
+    spielzustand.ballPosition = null;
 }
 
-export function Player1Throw(winkel, geschwindigkeit){
-    state.player1ThrownTime = new Date();
-    state.player1State = playerStates[1];
+export function Spieler1Werfen(winkel, geschwindigkeit){
+    spielzustand.spieler1.zeitAbgeworfen = new Date();
+    spielzustand.spieler1.zustand = ABGEWORFEN;
 
-    state.player1Winkel = winkel;
-    state.player1Geschwindigkeit = geschwindigkeit;
-    state.ball1Position = state.player1Position;
+    spielzustand.spieler1.winkel = winkel;
+    spielzustand.spieler1.geschwindigkeit = geschwindigkeit;
+    spielzustand.ballPosition=spielzustand.spieler1.position;
 }
 
-export function Simulate(){
+export function Simulation(){
     var aktuellerZeitpunkt = new Date();
 
-    if (state.player1State === playerStates[1]){
-        var sekunden = (aktuellerZeitpunkt.getTime() - state.player1ThrownTime.getTime()) / 1000;
-        state.ball1Position = BerechneBallPosition(state.player1Position.x, state.player1Position.y, sekunden, state.player1Winkel, state.player1Geschwindigkeit);
+    if (spielzustand.spieler1.zustand === ABGEWORFEN){
+        var sekunden = (aktuellerZeitpunkt.getTime() - spielzustand.spieler1.zeitAbgeworfen.getTime()) / 1000;
+        spielzustand.ballPosition = BerechneBallPosition(
+            spielzustand.spieler1.position.x, 
+            spielzustand.spieler1.position.y, 
+            sekunden, 
+            spielzustand.spieler1.winkel,
+            spielzustand.spieler1.geschwindigkeit);
         
-        if (state.ball1Position.y < 0){
-            state.player1State = playerStates[2];
-            state.player2State = playerStates[1];
+        if (spielzustand.ballPosition.y < 0){
+            spielzustand.spieler1.zustand = WARTEN;
+            spielzustand.spieler2.zustand = AN_DER_REIHE;
         }
     }
     
-    return state;
+    return spielzustand;
 }
 
-export function GetGameState() {
-    return state;
-}
 
