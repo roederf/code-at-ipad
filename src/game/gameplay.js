@@ -74,6 +74,10 @@ export function Spieler2Werfen(winkel, geschwindigkeit){
     }
 }
 
+function TesteObBallAußerhalbDesBereichsIst() {
+    return (spielzustand.ballPosition.y < 0) || (spielzustand.ballPosition.x > 50) || (spielzustand.ballPosition.x < 0);
+}
+
 function TesteObBallEtwasGetroffenHat(){
     for(var i=0; i<spielzustand.haeuser.length; i++){
         var haus = spielzustand.haeuser[i];
@@ -111,7 +115,7 @@ export function Simulation(){
         if (TesteObBallSpielerGetroffenWurde(spielzustand.spieler2)){
             spielzustand.spieler1.zustand = GEWONNEN;
         }
-        else if (TesteObBallEtwasGetroffenHat()){
+        else if (TesteObBallEtwasGetroffenHat() || TesteObBallAußerhalbDesBereichsIst()){
             spielzustand.spieler1.zustand = WARTEN;
             spielzustand.spieler2.zustand = AN_DER_REIHE;
         }
@@ -129,7 +133,7 @@ export function Simulation(){
         if (TesteObBallSpielerGetroffenWurde(spielzustand.spieler1)){
             spielzustand.spieler2.zustand = GEWONNEN;
         }
-        else if (TesteObBallEtwasGetroffenHat()){
+        else if (TesteObBallEtwasGetroffenHat() || TesteObBallAußerhalbDesBereichsIst()){
             spielzustand.spieler1.zustand = AN_DER_REIHE;
             spielzustand.spieler2.zustand = WARTEN;
         }
