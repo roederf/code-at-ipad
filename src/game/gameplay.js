@@ -34,16 +34,15 @@ export function NeuesSpielStarten(){
         { x:30, y: generateRandomHeight(), b:5 },
         { x:35, y: generateRandomHeight(), b:5 },
         { x:40, y: generateRandomHeight(), b:5 },
-        { x:45, y: generateRandomHeight(), b:5 },
-        { x:50, y: generateRandomHeight(), b:5 }
+        { x:45, y: generateRandomHeight(), b:5 }
     ];
     spielzustand.spieler1.position = {
         x: spielzustand.haeuser[1].x + 3,
         y: spielzustand.haeuser[1].y
     };
     spielzustand.spieler2.position = {
-        x: spielzustand.haeuser[spielzustand.haeuser.length-3].x + 3,
-        y: spielzustand.haeuser[spielzustand.haeuser.length-3].y
+        x: spielzustand.haeuser[spielzustand.haeuser.length-2].x + 3,
+        y: spielzustand.haeuser[spielzustand.haeuser.length-2].y
     };
     spielzustand.ballPosition = null;
 }
