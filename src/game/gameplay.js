@@ -23,28 +23,34 @@ var spielzustand = {
 }
 
 export function NeuesSpielStarten(){
+    
+    spielzustand.haeuser = [
+        { x: 0, y: generateRandomHeight(), b:5 },
+        { x: 5, y: generateRandomHeight(), b:5 },
+        { x:10, y: generateRandomHeight(), b:5 },
+        { x:15, y: generateRandomHeight(), b:5 },
+        { x:20, y: generateRandomHeight(), b:5 },
+        { x:25, y: generateRandomHeight(), b:5 },
+        { x:30, y: generateRandomHeight(), b:5 },
+        { x:35, y: generateRandomHeight(), b:5 },
+        { x:40, y: generateRandomHeight(), b:5 },
+        { x:45, y: generateRandomHeight(), b:5 },
+        { x:50, y: generateRandomHeight(), b:5 }
+    ];
     spielzustand.spieler1.position = {
-        x: 12,
-        y: 5
+        x: spielzustand.haeuser[1].x + 3,
+        y: spielzustand.haeuser[1].y
     };
     spielzustand.spieler2.position = {
-        x:43,
-        y:11
+        x: spielzustand.haeuser[spielzustand.haeuser.length-3].x + 3,
+        y: spielzustand.haeuser[spielzustand.haeuser.length-3].y
     };
-    spielzustand.haeuser = [
-        { x: 0, y:10, b:5 },
-        { x: 5, y: 8, b:5 },
-        { x:10, y: 5, b:5 },
-        { x:15, y: 9, b:5 },
-        { x:20, y:11, b:5 },
-        { x:25, y:20, b:5 },
-        { x:30, y: 8, b:5 },
-        { x:35, y: 7, b:5 },
-        { x:40, y:11, b:5 },
-        { x:45, y: 9, b:5 },
-        { x:50, y:10, b:5 }
-    ];
     spielzustand.ballPosition = null;
+}
+
+function generateRandomHeight()
+{
+    return Math.random() * 20;
 }
 
 export function Spieler1Werfen(winkel, geschwindigkeit){
