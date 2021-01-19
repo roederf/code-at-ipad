@@ -56,7 +56,7 @@ function generateRandomHeight()
 }
 
 export function BerechneWinkelUndGeschwindigkeit(punkt1, punkt2, sekunden) {
-    
+    var vx = punkt2.x - punkt1.x;
     var length = BerechneAbstandVonPunkten(punkt1, punkt2);
 
     var w = Math.acos(vx / length);
