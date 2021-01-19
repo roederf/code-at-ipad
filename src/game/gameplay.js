@@ -1,4 +1,4 @@
-import BerechneBallPosition from "./formulas.js";
+import BerechneBallPosition, { BerechneAbstandVonPunkten } from "./formulas.js";
 import { AN_DER_REIHE, ABGEWORFEN, WARTEN, GEWONNEN } from "./konstanten.js"
 
 var spielzustand = {
@@ -55,10 +55,8 @@ function generateRandomHeight()
 }
 
 export function BerechneWinkelUndGeschwindigkeit(punkt1, punkt2, sekunden) {
-    var vx = punkt2.x - punkt1.x;
-    var vy = punkt2.y - punkt1.y;
-
-    var length = Math.sqrt( vx * vx + vy * vy );
+    
+    var length = BerechneAbstandVonPunkten(punkt1, punkt2);
 
     var w = Math.acos(vx / length);
 
@@ -94,7 +92,24 @@ function TesteObBallAußerhalbDesBereichsIst() {
     return (spielzustand.ballPosition.y < 0) || (spielzustand.ballPosition.x > 50) || (spielzustand.ballPosition.x < 0);
 }
 
+function TesteObBallInnerhalbEinesLochs() {
+    var radius = 3;
+    for(var loch of spielzustand.loecher)
+    {
+        if (BerechneAbstandVonPunkten(spielzustand.ballPosition, loch) <= radius)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function TesteObBallEtwasGetroffenHat(){
+    if (TesteObBallInnerhalbEinesLochs()){
+        return false;
+    }
+    
     for(var i=0; i<spielzustand.haeuser.length; i++){
         var haus = spielzustand.haeuser[i];
         if (spielzustand.ballPosition.x > haus.x 

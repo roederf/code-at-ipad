@@ -19,3 +19,14 @@ export function BerechneSekunden(startZeit) {
     var now = new Date();
     return (now.getTime() - startZeit.getTime()) / 1000;
 }
+
+export function BerechneAbstandVonPunkten(p1, p2) {
+    var v = {
+        x: p2.x - p1.x,
+        y: p2.y - p1.y
+    }
+
+    var length = Math.sqrt( v.x * v.x + v.y * v.y );
+
+    return length;
+}
