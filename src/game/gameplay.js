@@ -20,7 +20,8 @@ var spielzustand = {
     },
     ballPosition: null,
     loecher: [],
-    haeuser: []
+    haeuser: [],
+    wind: 8
 }
 
 export function NeuesSpielStarten(){
@@ -109,7 +110,7 @@ function TesteObBallEtwasGetroffenHat(){
     if (TesteObBallInnerhalbEinesLochs()){
         return false;
     }
-    
+
     for(var i=0; i<spielzustand.haeuser.length; i++){
         var haus = spielzustand.haeuser[i];
         if (spielzustand.ballPosition.x > haus.x 
@@ -133,7 +134,7 @@ function TesteObBallSpielerGetroffenWurde(spieler){
 
 export function Simulation(){
     var aktuellerZeitpunkt = new Date();
-
+    
     if (spielzustand.spieler1.zustand === ABGEWORFEN){
         var sekunden = (aktuellerZeitpunkt.getTime() - spielzustand.spieler1.zeitAbgeworfen.getTime()) / 1000;
         spielzustand.ballPosition = BerechneBallPosition(
@@ -141,7 +142,8 @@ export function Simulation(){
             spielzustand.spieler1.position.y, 
             sekunden, 
             spielzustand.spieler1.winkel,
-            spielzustand.spieler1.geschwindigkeit);
+            spielzustand.spieler1.geschwindigkeit,
+            spielzustand.wind);
         
         if (TesteObBallSpielerGetroffenWurde(spielzustand.spieler2)){
             spielzustand.spieler1.zustand = GEWONNEN;
@@ -162,7 +164,8 @@ export function Simulation(){
             spielzustand.spieler2.position.y, 
             sekunden, 
             spielzustand.spieler2.winkel,
-            spielzustand.spieler2.geschwindigkeit);
+            spielzustand.spieler2.geschwindigkeit,
+            spielzustand.wind);
         
         if (TesteObBallSpielerGetroffenWurde(spielzustand.spieler1)){
             spielzustand.spieler2.zustand = GEWONNEN;
