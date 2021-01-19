@@ -19,6 +19,7 @@ var spielzustand = {
         geschwindigkeit: undefined
     },
     ballPosition: null,
+    loecher: [],
     haeuser: []
 }
 
@@ -45,6 +46,7 @@ export function NeuesSpielStarten(){
         y: spielzustand.haeuser[spielzustand.haeuser.length-2].y
     };
     spielzustand.ballPosition = null;
+    spielzustand.loecher = [];
 }
 
 function generateRandomHeight()
@@ -104,8 +106,7 @@ function TesteObBallEtwasGetroffenHat(){
             }
     }
 
-
-    return spielzustand.ballPosition.y < 0;
+    return false;
 }
 
 function TesteObBallSpielerGetroffenWurde(spieler){
@@ -131,6 +132,9 @@ export function Simulation(){
             spielzustand.spieler1.zustand = GEWONNEN;
         }
         else if (TesteObBallEtwasGetroffenHat() || TesteObBallAußerhalbDesBereichsIst()){
+            if (TesteObBallEtwasGetroffenHat()) {
+                spielzustand.loecher.push(spielzustand.ballPosition);
+            }
             spielzustand.spieler1.zustand = WARTEN;
             spielzustand.spieler2.zustand = AN_DER_REIHE;
         }
@@ -149,6 +153,9 @@ export function Simulation(){
             spielzustand.spieler2.zustand = GEWONNEN;
         }
         else if (TesteObBallEtwasGetroffenHat() || TesteObBallAußerhalbDesBereichsIst()){
+            if (TesteObBallEtwasGetroffenHat()) {
+                spielzustand.loecher.push(spielzustand.ballPosition);
+            }
             spielzustand.spieler1.zustand = AN_DER_REIHE;
             spielzustand.spieler2.zustand = WARTEN;
         }

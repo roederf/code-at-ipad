@@ -1,6 +1,7 @@
 import ZeichneHaus from "./rendering/house.js";
 import ZeichneGorilla from "./rendering/gorilla.js";
 import ZeichneBall from "./rendering/ball.js";
+import ZeichneLoch from "./rendering/hole.js";
 import { NeuesSpielStarten, 
     Spieler1Werfen, 
     Spieler2Werfen,
@@ -126,12 +127,17 @@ function render() {
     NeuZeichnen();
     
     var startX = 0;
-    for (let i = 0; i < spielzustand.haeuser.length; i++)
+    for(var haus of spielzustand.haeuser)
     {    
-        const hoehe = spielzustand.haeuser[i].y;
-        const breite = spielzustand.haeuser[i].b;
+        const hoehe = haus.y;
+        const breite = haus.b;
         ZeichneHaus(bufferContext, {x:startX, y:0}, hoehe, breite); 
         startX += breite;
+    }
+
+    for(var loch of spielzustand.loecher)
+    {
+        ZeichneLoch(bufferContext, loch);
     }
         
     ZeichneGorilla(bufferContext, spielzustand.spieler1.position);
