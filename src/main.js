@@ -6,6 +6,9 @@ import { NeuesSpielStarten,
     Spieler2Werfen,
     Simulation } from "./game/gameplay.js";
 import { ABGEWORFEN, AN_DER_REIHE, GEWONNEN, WARTEN } from "./game/konstanten.js"
+import { TransformierePunkt } from "./rendering/transform.js";
+import { BerechneWinkelUndGeschwindigkeit } from "./game/gameplay.js";
+import { BerechneSekunden } from "./game/formulas.js";
 
 var bufferContext = null;
 var buffer = null;
@@ -24,11 +27,56 @@ window.onload = function(){
     document.getElementById("EingabeButon1").onclick = AbwerfenSpieler1;
     document.getElementById("EingabeButon2").onclick = AbwerfenSpieler2;
 
+    console.log("adding eventhandler ");
+
+    canvas.addEventListener("mousedown", handleMouseDown, false);
+    canvas.addEventListener("mousemove", handleMouseMove, false);
+    canvas.addEventListener("mouseup", handleMouseUp, false);
+
     NeuesSpielStarten();
 
     document.getElementById("Spieler1Titel").innerHTML = "Spieler 1 ist dran";
 
     render();
+}
+
+var startDrag = undefined;
+var startTime = undefined;
+
+function handleMouseDown(event) {
+    console.log(event);
+    startDrag = {
+        x: event.offsetX,
+        y: event.offsetY
+    }
+    startTime = new Date();
+}
+
+function handleMouseMove(event) {
+    
+}
+
+function handleMouseUp(event) {
+    console.log(event);
+    var endDrag = {
+        x: event.offsetX,
+        y: event.offsetY
+    }
+    
+    var sekunden = BerechneSekunden(startTime);
+
+    if (startDrag)
+    {
+        var p1 = TransformierePunkt(startDrag);
+        var p2 = TransformierePunkt(endDrag);
+        
+        var daten = BerechneWinkelUndGeschwindigkeit(p1, p2, sekunden)
+
+        Spieler1Werfen(daten.winkel, daten.geschwindigkeit);
+        
+        startDrag = null;
+    }
+    
 }
 
 function NeuZeichnen(){

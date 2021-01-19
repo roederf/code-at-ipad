@@ -14,3 +14,8 @@ export default function BerechneBallPosition(x, y, sekunden, winkel, geschwindig
 
     return punkt;
 }
+
+export function BerechneSekunden(startZeit) {
+    var now = new Date();
+    return (now.getTime() - startZeit.getTime()) / 1000;
+}

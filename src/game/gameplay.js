@@ -52,6 +52,20 @@ function generateRandomHeight()
     return Math.random() * 20;
 }
 
+export function BerechneWinkelUndGeschwindigkeit(punkt1, punkt2, sekunden) {
+    var vx = punkt2.x - punkt1.x;
+    var vy = punkt2.y - punkt1.y;
+
+    var length = Math.sqrt( vx * vx + vy * vy );
+
+    var w = Math.acos(vx / length);
+
+    return {
+        winkel: w * 180 / Math.PI,
+        geschwindigkeit: length / (sekunden * 1000)
+    }
+}
+
 export function Spieler1Werfen(winkel, geschwindigkeit){
     if (spielzustand.spieler1.zustand === AN_DER_REIHE) {
         spielzustand.spieler1.zeitAbgeworfen = new Date();
